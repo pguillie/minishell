@@ -25,8 +25,8 @@ int			sh_hist_write(char *line, char *last)
 		i++;
 	if (line[i] && !ft_strequ(line, last))
 	{
-		if ((fd = open(hist ? hist : HIST_FILE, O_WRONLY | O_APPEND | O_CREAT,
-						S_IRUSR | S_IWUSR)) < 0)
+		if ((fd = open(access(hist, W_OK) == 0 ? hist : HIST_FILE,
+						O_WRONLY | O_APPEND | O_CREAT, S_IRUSR | S_IWUSR)) < 0)
 		{
 			ft_strdel(&hist);
 			return (1);

@@ -3,6 +3,7 @@
 
 int		sh_builtin(char *av[], char **env[], int *ret);
 int		sh_cd(char *av[], char **env[]);
+int		sh_cd_curpath(char *cd, char **curpath, char **env[], char opt);
 int		sh_echo(char *av[]);
 int		sh_env(char *av[], char *env[]);
 int		sh_exit(char *av[], int ret);

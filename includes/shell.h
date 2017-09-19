@@ -17,7 +17,7 @@
 **	DEFINE
 */
 
-# define HIST_FILE ".minish_history"
+# define HIST_FILE ".ministory"
 # define ERROR_MAX 5
 # define PATH_MAX 2048
 

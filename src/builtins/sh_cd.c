@@ -1,51 +1,11 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   sh_cd.c                                            :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: pguillie <marvin@42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/08/11 15:00:10 by pguillie          #+#    #+#             */
-/*   Updated: 2017/09/18 20:28:12 by pguillie         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "shell.h"
-
-static int	sh_cd_path(char **curpath, char *env[])
-{
-	char	**cdpath;
-	char	*fpath;
-	size_t	i;
-	int		ret;
-
-	if (!(cdpath = sh_envvarsplit(sh_getenv("CDPATH", env))))
-		return (-1);
-	fpath = NULL;
-	ret = 0;
-	i = 0;
-	while (cdpath[i])
-	{
-		fpath = ft_strcjoin(cdpath[i] ? cdpath[i] : ".", *curpath, '/');
-		if (access(fpath, F_OK) == 0)
-			break ;
-		ft_strdel(&fpath);
-		i++;
-	}
-	ft_strtabdel(cdpath);
-	if (fpath)
-	{
-		*curpath = fpath;
-		ret = 1;
-	}
-	return (ret);
-}
 
 static int	sh_cd_opt(char *av[], char *opt)
 {
 	int		i;
 	int		j;
 
+	*opt = 'L';
 	if (!av[1])
 		return (1);
 	i = 1;
@@ -68,84 +28,82 @@ static int	sh_cd_opt(char *av[], char *opt)
 	return (i);
 }
 
-static char *sh_cd_logpath(char *path)
+static int	sh_cd_env(char *curpath, char **env[], char opt)
 {
-	size_t  i;
-	size_t  j;
+	char	tmp[PATH_MAX];
+	char	cwd[PATH_MAX];
+	int		ret;
 
-	i = 0;
-	while (path[i])
+	if (ft_strequ(curpath, "-"))
+		ft_putendl(curpath);
+	ft_strncpy(tmp, curpath, PATH_MAX);
+	ret = sh_setenv_nam_val("OLDPWD", sh_getenv("PWD", *env), env);
+	if (opt == 'P')
 	{
-		if (ft_strnequ(path + i, "/./", 3) || ft_strequ(path + i, "/."))
-			ft_memmove(path + i + 1, path + i + 2, ft_strlen(path + i + 1));
-		else if (ft_strnequ(path + i, "//", 2))
-			ft_memmove(path + i, path + i + 1, ft_strlen(path + i));
-		else if (ft_strnequ(path + i, "/../", 4) || ft_strequ(path + i, "/.."))
-		{
-			j = i > 0 ? i - 1 : 0;
-			while (j && path[j] != '/')
-				j--;
-			ft_memmove(path + j + 1, path + i + 2, ft_strlen(path + j + 1));
-			i = j;
-		}
-		else if (ft_strequ(path + i, "/") && i)
-			path[i] = '\0';
+		if (getcwd(cwd, PATH_MAX))
+			ret = sh_setenv_nam_val("PWD", cwd, env);
 		else
-			i++;
+			return (ft_error("cd", E_SETENV("PWD"), NULL));
 	}
-	return (path);
+	else
+		ret = sh_setenv_nam_val("PWD", tmp, env);
+	return (ret);
 }
 
-//ca leaks
+static int	sh_cd_dir(char *curpath, int free)
+{
+	struct stat	buf;
+
+	if (stat(curpath, &buf) < 0)
+	{
+		free ? ft_strdel(&curpath) : 0;
+		return (-1);
+	}
+	if (!S_ISDIR(buf.st_mode))
+	{
+		ft_error("cd", curpath, "Not a directory");
+		free ? ft_strdel(&curpath) : 0;
+		return (1);
+	}
+	return (0);
+}
+
+static int	sh_cd_end(char *curpath, char **env[], char opt, int free)
+{
+	if (chdir(curpath) < 0)
+	{
+		free ? ft_strdel(&curpath) : 0;
+		return (ft_error("cd", "Unable to change directory", NULL));
+	}
+	if (sh_cd_env(curpath, env, opt))
+	{
+		free ? ft_strdel(&curpath) : 0;
+		return (ft_error("cd", "Some environment variables could"
+					" not be set correctly", NULL));
+	}
+	if (free)
+		ft_strdel(&curpath);
+	return (0);
+}
+
 int			sh_cd(char *av[], char **env[])
 {
 	char	*curpath;
-	char	cwd[PATH_MAX];
 	char	opt;
-	int		success;
 	int		i;
+	int		free;
 
-	opt = 'L';
 	if ((i = sh_cd_opt(av, &opt)) < 0)
 		return (sh_ill_opt(av[0], opt));
 	if (av[i] && av[i + 1])
 		return (ft_error(av[0], E_2MNARG, NULL));
 	if (!(curpath = av[i] ? av[i] : sh_getenv("HOME", *env)))
 		return (ft_error(av[0], "environment variable `HOME' not set", NULL));
-	//	printf("dir : %s\n", curpath);//
-	if (ft_strequ(curpath, "-"))
-		if (!(curpath = sh_getenv("OLDPWD", *env)))
-			return (ft_error(av[0], "environment variable `OLDPWD' not set", NULL));
-	if (curpath[0] != '/'
-			&& !ft_strequ(curpath, ".") && !ft_strequ(curpath, "..")
-			&& !ft_strnequ(curpath, "./", 2) && !ft_strnequ(curpath, "../", 3))
-	{
-		success = sh_cd_path(&curpath, *env);
-		if (success < 0)
-			return (ft_error(av[0], "Unable to open `CDPATH' environment variable "
-						"or current directory", NULL));
-		if (success == 0)
-			return (ft_error(av[0], curpath, E_NOENT));
-	}
-	if (opt == 'L')
-	{
-		if (curpath[0] != '/')
-			curpath = ft_strcjoin(sh_getenv("PWD", *env), curpath, '/');
-		curpath = sh_cd_logpath(curpath);
-	}
-	if (chdir(curpath) < 0)
-		return (ft_error(av[0], "Unable to change directory.", NULL));
-	if (ft_strequ(av[i], "-"))
-		ft_putendl(sh_getenv("OLDPWD", *env));
-	sh_setenv_nam_val("OLDPWD", sh_getenv("PWD", *env), env);
-	if (opt == 'P')
-	{
-		if (getcwd(cwd, PATH_MAX))
-			sh_setenv_nam_val("PWD", cwd, env);
-		else
-			return (ft_error(av[0], "Unable to set `PWD' environment variable", NULL));
-	}
-	else
-		sh_setenv_nam_val("PWD", curpath, env);
-	return (0);
+	if (ft_strequ(av[i], "-") && !(curpath = sh_getenv("OLDPWD", *env)))
+		return (ft_error(av[0], "environment variable `OLDPWD' not set", NULL));
+	if ((free = sh_cd_curpath(av[0], &curpath, env, opt)) == 1)
+		return (-1);
+	if (sh_cd_dir(curpath, free))
+		return (1);
+	return (sh_cd_end(curpath, env, opt, free));
 }
