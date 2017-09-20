@@ -28,9 +28,11 @@ int		sh_edit_line(t_line **line, char **save, t_token **lexer, t_tc *tc)
 			success[0] = sh_esc(line, &coord, tc);
 		else if (byte == '\n')
 			success[0] = sh_nl(*line, &coord, *tc);
+		else if (byte == '\t')
+			success[0] = sh_tab(*line, *lexer, &coord, *tc);
 		else if (byte == 127)
 			success[0] = sh_del_l(*line, &coord, *tc);
-		else
+		else if (byte >= 32 && byte < 127)
 			success[0] = sh_ins(*line, &coord, *tc, byte);
 		if (success[0] < 0)
 			return (success[0]);
@@ -42,7 +44,15 @@ int		sh_edit_line(t_line **line, char **save, t_token **lexer, t_tc *tc)
 				return (-1);
 		}
 		if (success[0] & DISP)
+		{
+			if (success[0] & (DISP_FULL ^ DISP))
+			{
+				(*line)->pos = (*line)->cur;
+				(*line)->cur = sh_move_cur((*line)->cur, 0, coord, *tc);
+				sh_prompt(*save ? 2 : 1);
+			}
 			sh_display(*line, coord, *tc); //+lexer
+		}
 	}
 	free(coord);
 	*save ? ft_strdel(save) : 0;

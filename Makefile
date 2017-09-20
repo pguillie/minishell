@@ -6,7 +6,7 @@
 #    By: pguillie <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/18 13:53:37 by pguillie          #+#    #+#              #
-#    Updated: 2017/09/18 15:02:16 by pguillie         ###   ########.fr        #
+#    Updated: 2017/09/20 11:19:51 by pguillie         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -49,12 +49,14 @@ obj:
 	mkdir -p ./obj/builtins
 	mkdir -p ./obj/environment
 	mkdir -p ./obj/execution
+	mkdir -p ./obj/hci/completion
 	mkdir -p ./obj/hci/conversions
 	mkdir -p ./obj/hci/cur_motion
 	mkdir -p ./obj/hci/edition
 	mkdir -p ./obj/hci/history
 	mkdir -p ./obj/hci/lexer
 	mkdir -p ./obj/hci/prompt
+	mkdir -p ./obj/hci/x-able
 	mkdir -p ./obj/initialization
 	mkdir -p ./obj/parser
 	@ echo "$(BLUE)[$(NAME)]: objects directory created$(EOC)"

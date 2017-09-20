@@ -24,6 +24,7 @@
 # define EOL 4
 # define LEXER 2
 # define DISP 1
+# define DISP_FULL 9
 # define SYN_ERR 4
 # define LEX_LOOP 2 
 # define LEX_OK 1

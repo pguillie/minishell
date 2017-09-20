@@ -6,7 +6,7 @@
 /*   By: pguillie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/10 11:54:08 by pguillie          #+#    #+#             */
-/*   Updated: 2017/08/10 16:55:41 by pguillie         ###   ########.fr       */
+/*   Updated: 2017/09/20 10:54:26 by pguillie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ static int	sh_unsetenv_remove(char **env[], size_t pos, size_t size)
 		if (size != pos)
 			new[--i] = (*env)[size];
 	}
+	ft_strdel(&(*env)[pos]);
 	ft_memdel((void**)env);
 	*env = new;
 	return (0);
@@ -39,7 +40,7 @@ int			sh_unsetenv_name(char *name, char **env[])
 	pos = -1;
 	while ((*env)[i])
 	{
-		if (ft_strnequ((*env)[i], name, ft_strlen(name))
+		if (pos < 0 && ft_strnequ((*env)[i], name, ft_strlen(name))
 				&& ft_strcmp((*env)[i], name) == '=')
 			pos = i;
 		i++;
@@ -57,7 +58,10 @@ int			sh_unsetenv(char *av[], char **env[])
 	while (av[i])
 	{
 		if (sh_unsetenv_name(av[i], env))
-			return (ft_error(av[i], "Unable to remove variable from environment", NULL));
+		{
+			return (ft_error(av[i], "Unable to remove variable"
+						" from environment", NULL));
+		}
 		i++;
 	}
 	if (i == 1)
