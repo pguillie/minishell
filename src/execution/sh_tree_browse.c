@@ -76,7 +76,7 @@ int		sh_tree_browse(t_tree *root)
 		{
 			ret = sh_tree_browse(root->left);
 			if (!(ft_strequ(root->op, "&&") && ret)
-					&& !(ft_strequ(root->op, "||") && !ret))
+					&& !(ft_strequ(root->op, "||") && !ret) && root->right)
 				ret = sh_tree_browse(root->right);
 		}
 	}

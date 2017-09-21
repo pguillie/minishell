@@ -84,5 +84,5 @@ int			sh_execution(char *av[], char *env[])
 	else
 		waitpid(child, &ret, 0);
 	ft_strdel(&path);
-	return (ret);
+	return (WEXITSTATUS(ret));
 }

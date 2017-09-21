@@ -9,6 +9,7 @@
 # include <sys/stat.h>
 # include <sys/wait.h>
 # include <termios.h>
+# include <signal.h>
 # include <dirent.h>
 # include <termcap.h>
 # include <time.h>
@@ -21,10 +22,11 @@
 # define ERROR_MAX 5
 # define PATH_MAX 2048
 
+# define EOT 8
 # define EOL 4
 # define LEXER 2
 # define DISP 1
-# define DISP_FULL 9
+# define DISP_FULL 17
 # define SYN_ERR 4
 # define LEX_LOOP 2 
 # define LEX_OK 1

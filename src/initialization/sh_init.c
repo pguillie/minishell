@@ -4,6 +4,7 @@ int		sh_init(t_tc *init)
 {
 	int		success;
 
+	sh_init_sig();
 	success = sh_init_env();
 	if (success < 0)
 		return (ft_error("Unable to duplicate environment", NULL, NULL));

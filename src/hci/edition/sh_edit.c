@@ -17,18 +17,21 @@ int		sh_edit(t_line *line, char *last, t_token **lexer, t_tc *tc)
 		line->cur = 0;
 		tc->esc = NULL;
 		tc->prompt = sh_prompt(!save ? 1 : 2);
-		if ((ret = sh_edit_line(&line, &save, lexer, tc)) < 0)
-			return (sh_token_del(lexer));
+		ret = sh_edit_line(&line, &save, lexer, tc);
+		if (ret < 0 || ret == EOT)
+			break ;
 		if (ret & LEX_OK)
 			ret = sh_verification(*lexer);
 	}
 	if (tcsetattr(0, TCSANOW, &backup) < 0)
 	{
 		ft_error("Unable to restore termios structure", NULL, NULL);
-		return (-1);
+		ret = -1;
 	}
-	if (sh_hist_write(save, last))
-		ft_error("Unable to write line in history", NULL, NULL);
+	if (ret < 0 || ret & EOT || ret & SYN_ERR)
+		sh_token_del(lexer);
+	else if (sh_hist_write(save, last))
+			ft_error("Unable to write line in history", NULL, NULL);
 	save ? ft_strdel(&save) : 0;
-	return (ret);
+	return (g_sig == SIGINT ? 1 : ret);
 }

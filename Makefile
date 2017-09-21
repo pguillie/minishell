@@ -6,7 +6,7 @@
 #    By: pguillie <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/09/18 13:53:37 by pguillie          #+#    #+#              #
-#    Updated: 2017/09/20 11:19:51 by pguillie         ###   ########.fr        #
+#    Updated: 2017/09/21 15:59:47 by pguillie         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -59,6 +59,7 @@ obj:
 	mkdir -p ./obj/hci/x-able
 	mkdir -p ./obj/initialization
 	mkdir -p ./obj/parser
+	mkdir -p ./obj/signal
 	@ echo "$(BLUE)[$(NAME)]: objects directory created$(EOC)"
 
 $(LIB):

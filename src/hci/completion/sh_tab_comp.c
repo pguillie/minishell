@@ -7,7 +7,7 @@ static void	sh_tab_eow(t_line *line)
 		line->pos += 1;
 }
 
-int		sh_tab_ins(t_line *line, t_coord **coord, t_tc tc, char *s)
+static int	sh_tab_ins(t_line *line, t_coord **coord, t_tc tc, char *s)
 {
 	size_t	len;
 
@@ -21,7 +21,7 @@ int		sh_tab_ins(t_line *line, t_coord **coord, t_tc tc, char *s)
 	}
 	ft_memmove(line->str + line->cur + len, line->str + line->cur,
 			ft_strlen(line->str + line->cur) + len);
-	ft_strcat(line->str + line->cur, s);
+	ft_strncpy(line->str + line->cur, s, len);
 	line->used += len;
 	free(*coord);
 	if (!(*coord = sh_create_coord(line, tc.prompt)))
@@ -30,10 +30,9 @@ int		sh_tab_ins(t_line *line, t_coord **coord, t_tc tc, char *s)
 	return (LEXER | DISP);
 }
 
-int		sh_tab_comp(t_line *line, t_coord **coord, t_tc tc, char *buf)
+int			sh_tab_comp(t_line *line, t_coord **coord, t_tc tc, char *buf)
 {
 	sh_tab_eow(line);
 	line->cur = sh_move_cur(line->cur, line->pos, *coord, tc);
-	sh_tab_ins(line, coord, tc, buf);
-	return (LEXER | DISP);
+	return (sh_tab_ins(line, coord, tc, buf));
 }

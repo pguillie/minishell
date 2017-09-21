@@ -7,8 +7,8 @@ int		sh_tab_multi(t_line *line, t_coord **coord, t_tc tc, char *array[])
 	size_t	j;
 	int		ret;
 
-	ft_strncpy(occ, array[0], PATH_MAX);
-	i = 1;
+	ft_strncpy(occ, array[1], PATH_MAX);
+	i = 2;
 	while (array[i] && occ[0])
 	{
 		j = 0;
@@ -17,11 +17,12 @@ int		sh_tab_multi(t_line *line, t_coord **coord, t_tc tc, char *array[])
 		ft_strclr(occ + j);
 		i += 1;
 	}
-	if (occ[0])
-		ret = sh_tab_comp(line, coord, tc, occ);//secur + "ret = LEXER | DISP"
+	if (ft_strlen(occ) > ft_strlen(array[0]))
+		ret = sh_tab_comp(line, coord, tc, occ + ft_strlen(array[0]));
 	else
 	{
-		ft_printf("\n== tabulation ==\n");
+		array = ft_strtab_sort(array + 1);
+		write(1, "\n", 1);
 		ft_strtab_disp(array);
 		ret = DISP_FULL;
 	}

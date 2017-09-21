@@ -5,7 +5,7 @@
 **	HUMAN-COMPUTER INTERACTION
 */
 
-int		sh_hci(t_tc *termcaps, t_token **lexer);
+int		sh_hci(t_tc *termcaps, t_token **lexer, int ret);
 int		sh_edit(t_line *line, char *last, t_token **lexer, t_tc *termcaps);
 
 /*
@@ -21,7 +21,7 @@ t_line	*sh_hist_able(char *esc, t_line *line);
 */
 
 int		sh_tab(t_line *line, t_token *lexer, t_coord **coord, t_tc tc);
-char	**sh_tab_find(char *lexeme, int cat);
+char	**sh_tab_find(char *array[], char *dir, int cat);
 int		sh_tab_comp(t_line *line, t_coord **coord, t_tc tc, char *buf);
 int		sh_tab_multi(t_line *line, t_coord **coord, t_tc tc, char *array[]);
 
@@ -56,6 +56,7 @@ void	sh_clear(t_line *line, t_coord *coord, t_tc tc);
 void	sh_display(t_line *line, t_coord *coord, t_tc tc);
 int		sh_del_l(t_line *line, t_coord **coord, t_tc tc);
 int		sh_del_r(t_line *line, t_coord **coord, t_tc tc);
+int		sh_ctrl_d(t_line *line, t_coord **coord, t_tc tc, char *save);
 int		sh_hist(t_line **line, t_coord **coord, t_tc tc, t_line *target);
 int		sh_ins(t_line *line, t_coord **coord, t_tc tc, char c);
 int		termput(int c);

@@ -1,6 +1,6 @@
 #include "shell.h"
 
-int		sh_hci(t_tc *tc, t_token **lexer)
+int		sh_hci(t_tc *tc, t_token **lexer, int mret)
 {
 	t_line	*hist;
 	char	*last;
@@ -12,11 +12,13 @@ int		sh_hci(t_tc *tc, t_token **lexer)
 	last = hist->up ? ft_strjoin(hist->up->str, "\n") : NULL;
 	ret = sh_edit(hist, last, lexer, tc);
 	last ? ft_strdel(&last) : 0;
+	sh_hist_del(&hist);
+	if (g_sig == SIGINT)
+		write(1, "\n", 1);
+	if (ret & EOT)
+		sh_exit(NULL, mret);
 	if (ret < 0)
 		return (ft_error("\nSevere error occured while getting input",
 					NULL, NULL));
-	if (ret & SYN_ERR)
-		sh_token_del(lexer);
-	sh_hist_del(&hist);
 	return (0);
 }
