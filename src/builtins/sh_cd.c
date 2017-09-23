@@ -30,17 +30,17 @@ static int	sh_cd_opt(char *av[], char *opt)
 
 static int	sh_cd_env(char *curpath, char **env[], char opt)
 {
-	char	tmp[PATH_MAX];
-	char	cwd[PATH_MAX];
+	char	tmp[PATH_SIZE];
+	char	cwd[PATH_SIZE];
 	int		ret;
 
 	if (ft_strequ(curpath, "-"))
 		ft_putendl(curpath);
-	ft_strncpy(tmp, curpath, PATH_MAX);
+	ft_strncpy(tmp, curpath, PATH_SIZE);
 	ret = sh_setenv_nam_val("OLDPWD", sh_getenv("PWD", *env), env);
 	if (opt == 'P')
 	{
-		if (getcwd(cwd, PATH_MAX))
+		if (getcwd(cwd, PATH_SIZE))
 			ret = sh_setenv_nam_val("PWD", cwd, env);
 		else
 			return (ft_error("cd", E_SETENV("PWD"), NULL));

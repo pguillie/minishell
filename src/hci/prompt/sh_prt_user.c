@@ -1,10 +1,19 @@
 #include "shell.h"
 
-int		sh_prt_user(void)
+int		sh_prt_user(char buff[], int *b)
 {
-	char	*user;
+	struct passwd	*p;
+	int				i;
 
-	user = getenv("LOGNAME");
-	ft_putstr(user);
-	return (ft_strlen(user));
+	i = 0;
+	if ((p = getpwuid(getuid())))
+	{
+		while (p->pw_name[i])
+		{
+			if (*b == PRT_SIZE)
+				*b = ft_flush_buff(buff, PRT_SIZE);
+			buff[(*b)++] = p->pw_name[i++];
+		}
+	}
+	return (i);
 }

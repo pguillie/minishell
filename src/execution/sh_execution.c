@@ -36,7 +36,6 @@ static int	sh_exec_dir(char *cmd, char *dir)
 
 static int	sh_exec_bin(char *cmd, char **path)
 {
-	extern char	**environ;
 	char		**env_path;
 	char		*path_value;
 	int			i;
@@ -60,6 +59,30 @@ static int	sh_exec_bin(char *cmd, char **path)
 	return (0);
 }
 
+static int	sh_father_child(pid_t child, char *path, char *av[], char *env[])
+{
+	int			ret;
+
+	ret = 0;
+	if (child == 0)
+	{
+		sh_dfl_sig();
+		if (execve(path, av, env) < 0)
+			return (-1);
+	}
+	else
+	{
+		signal(SIGINT, SIG_IGN);
+		waitpid(child, &ret, WUNTRACED);
+		if (WIFSTOPPED(ret))
+		{
+			kill(child, SIGTERM);
+			wait(&ret);
+		}
+	}
+	return (WEXITSTATUS(ret));
+}
+
 int			sh_execution(char *av[], char *env[])
 {
 	pid_t		child;
@@ -70,19 +93,14 @@ int			sh_execution(char *av[], char *env[])
 	path = NULL;
 	ret = 0;
 	if ((no_file = ft_strchr(av[0], '/') ?
-		sh_exec_file(av[0], &path) : sh_exec_bin(av[0], &path)) < 0)
+				sh_exec_file(av[0], &path) : sh_exec_bin(av[0], &path)) < 0)
 		return (-1);
 	if (no_file)
 		return (1);
 	if ((child = fork()) < 0)
 		return (-1);
-	if (child == 0)
-	{
-		if (execve(path, av, env) < 0)
-			return (-1);
-	}
-	else
-		waitpid(child, &ret, 0);
+	ret = sh_father_child(child, path, av, env);
+	sh_init_sig();
 	ft_strdel(&path);
-	return (WEXITSTATUS(ret));
+	return (ret);
 }

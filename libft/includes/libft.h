@@ -119,6 +119,12 @@ void				ft_strtab_disp(char **tab);
 void				ft_strtabdel(char **tab);
 
 /*
+** Buffer
+*/
+
+size_t				ft_flush_buff(char *buff, size_t size);
+
+/*
 ** Case
 */
 

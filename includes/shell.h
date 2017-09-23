@@ -10,6 +10,7 @@
 # include <sys/wait.h>
 # include <termios.h>
 # include <signal.h>
+# include <pwd.h>
 # include <dirent.h>
 # include <termcap.h>
 # include <time.h>
@@ -18,15 +19,26 @@
 **	DEFINE
 */
 
-# define HIST_FILE ".ministory"
+# define SHELL "minishell"
+# define VERSION "1.00"
+# define PATCH "0"
+
+# define HIST_FILE ".minishell_history"
 # define ERROR_MAX 5
-# define PATH_MAX 2048
+# define PATH_SIZE 2048
+# define PRT_SIZE 256
+# define PROMPT_DIRTRIM 0
+# define PS1 "\\e[31;1m[\\T] \\e[34m\\w \\$\\e[0m "
+# define PS2 "> "
+# define PS3 NULL
+# define PS4 NULL
 
 # define EOT 8
 # define EOL 4
 # define LEXER 2
 # define DISP 1
 # define DISP_FULL 17
+
 # define SYN_ERR 4
 # define LEX_LOOP 2 
 # define LEX_OK 1
@@ -39,6 +51,8 @@
 # define HOME 128
 # define CTL 64  
 
+# define CASE(x) (x | 32)
+
 /*
 **	RESSOURCES
 */
@@ -48,7 +62,7 @@
 # include "sh_struct.h"
 
 /*
-**	PROTO
+**	PROTOTYPES
 */
 
 # include "sh_builtins.h"
@@ -57,6 +71,7 @@
 # include "sh_hci.h"
 # include "sh_initialization.h"
 # include "sh_parser.h"
+# include "sh_signal.h"
 
 ////////////////
 void displex(t_token *lexer);

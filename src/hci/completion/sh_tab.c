@@ -105,7 +105,7 @@ int			sh_tab(t_line *line, t_token *lex, t_coord **coord, t_tc tc)
 		sh_tab_space(array[1], dir, ft_strlen(array[0]));
 		ret = sh_tab_comp(line, coord, tc, dir);
 	}
-	else
+	else if (array[1])
 		ret = sh_tab_multi(line, coord, tc, array);
 	sh_tab_del(array);
 	return (ret);

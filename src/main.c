@@ -24,9 +24,9 @@ int			main(void)
 		return (1);
 	remaining_error = ERROR_MAX;
 	ret = 0;
-		g_sig = 0;
 	while (remaining_error)
 	{
+		g_sig = 0;
 		lexer = NULL;
 		root = NULL;
 		if (sh_hci(&termcaps, &lexer, ret))

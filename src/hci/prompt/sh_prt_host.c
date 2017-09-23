@@ -1,17 +1,24 @@
 #include "shell.h"
 
-int		sh_prt_host(char c)
+int		sh_prt_host(char buff[], int *b, char h)
 {
-	char	host[1024];
-	size_t	i;
+	char	host[128];
+	int		i;
+	int		len;
 
-	ft_memset(host, 0, 1024);
-	if (gethostname(host, 1024) < 0)
-		return (0);
-	i = 0;
-	while (i < 1024 && (c == 'h' ? host[i] != '.' : 1))
-		i++;
-	host[i] = '\0';
-	ft_putstr(host);
-	return (ft_strlen(host));
+	len = 0;
+	if (gethostname(host, 128) == 0)
+	{
+		i = 0;
+		while (host[i])
+		{
+			if (host[i] == '.' && h == 'h')
+				break ;
+			len = (host[i] == '\n' ? 0 : len + 1);
+			if (*b == PRT_SIZE)
+				*b = ft_flush_buff(buff, PRT_SIZE);
+			buff[(*b)++] = host[i++];
+		}
+	}
+	return (len);
 }
