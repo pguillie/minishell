@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   sh_setenv.c                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: pguillie <marvin@42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/08/10 10:36:20 by pguillie          #+#    #+#             */
-/*   Updated: 2017/09/18 17:14:24 by pguillie         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "shell.h"
 
 static int	sh_setenv_array(char *var, char **env[])
@@ -50,7 +38,8 @@ int		sh_setenv_line(char *line, char **env[])
 	i = 0;
 	while (line[i] && line[i] != '=')
 	{
-		if ((line[i] < 'A' || line[i] > 'Z') && line[i] != '_')
+		if ((line[i] < 'A' || line[i] > 'Z')
+			&& (line[i] < '0' || line[i] > '9') && line[i] != '_')
 		{
 			ft_error(line, "Environment variables name may contain "
 					"uppercase letters and underscore `_' only", NULL);
@@ -71,7 +60,8 @@ int		sh_setenv_nam_val(char *name, char *value, char **env[])
 	i = 0;
 	while (name[i])
 	{
-		if ((name[i] < 'A' || name[i] > 'Z') && name[i] != '_')
+		if ((name[i] < 'A' || name[i] > 'Z')
+			&& (name[i] < '0' || name[i] > '9') && name[i] != '_')
 		{
 			ft_error(name, "Environment variables name may contain "
 					"uppercase letters and underscore `_' only", NULL);

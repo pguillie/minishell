@@ -13,7 +13,7 @@ static int	sh_norme1(t_line **line, char **save, t_token *lexer, t_coord **coord
 	int		ret;
 	char	byte;
 
-	ret = -1;
+	ret = 0;
 	if (read(0, &byte, 1) < 0)
 		return (-1);
 	if (byte == 27)
@@ -46,7 +46,7 @@ static void	sh_norme2(t_line *line, t_coord *coord, char *save, t_tc tc, int suc
 		if (success & (DISP_FULL ^ DISP))
 		{
 			line->pos = line->cur;
-			line->cur = sh_move_cur(line->cur, 0, coord, tc);
+			line->cur = 0;
 			sh_prompt(save ? 2 : 1);
 		}
 		sh_display(line, coord, tc); //+lexer

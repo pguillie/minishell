@@ -8,7 +8,8 @@ static void	sh_tab_append(char **array[], char *occ, char c)
 	i = 0;
 	if (*array)
 		while ((*array)[i])
-			i += 1;
+			if (ft_strequ((*array)[i++], occ))
+				return ;
 	if ((new = (char**)ft_memalloc(sizeof(char*) * (i + 2))))
 	{
 		if ((new[i] = ft_strnew(ft_strlen(occ) + 1)))
@@ -61,6 +62,25 @@ static void	sh_tab_open(char **array[], char *dir, int cat)
 	}
 }
 
+static void	sh_tab_builtin(char **array[])
+{
+	size_t	len;
+
+	len = ft_strlen(*array[0]);
+	if (ft_strnequ(*array[0], "echo", len))
+		sh_tab_append(array, "echo", 0);
+	if (ft_strnequ(*array[0], "cd", len))
+		sh_tab_append(array, "cd", 0);
+	if (ft_strnequ(*array[0], "setenv", len))
+		sh_tab_append(array, "setenv", 0);
+	if (ft_strnequ(*array[0], "unsetenv", len))
+		sh_tab_append(array, "unsetenv", 0);
+	if (ft_strnequ(*array[0], "env", len))
+		sh_tab_append(array, "env", 0);
+	if (ft_strnequ(*array[0], "exit", len))
+		sh_tab_append(array, "exit", 0);
+}
+
 char		**sh_tab_find(char *array[], char *dir, int category)
 {
 	char	**path;
@@ -78,6 +98,7 @@ char		**sh_tab_find(char *array[], char *dir, int category)
 			i += 1;
 		}
 		ft_strtabdel(path);
+		sh_tab_builtin(&array);
 	}
 	else
 		sh_tab_open(&array, dir, category);

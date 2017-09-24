@@ -20,7 +20,7 @@
 */
 
 # define SHELL "minishell"
-# define VERSION "1.00"
+# define VERSION "1.0"
 # define PATCH "0"
 
 # define HIST_FILE ".minishell_history"
@@ -28,10 +28,10 @@
 # define PATH_SIZE 2048
 # define PRT_SIZE 256
 # define PROMPT_DIRTRIM 0
-# define PS1 "\\e[31;1m[\\T] \\e[34m\\w \\$\\e[0m "
+# define PS1 "\\s-\\v\\$ "
 # define PS2 "> "
-# define PS3 NULL
-# define PS4 NULL
+# define PS3 "#? "
+# define PS4 "+ "
 
 # define EOT 8
 # define EOL 4
@@ -68,6 +68,7 @@
 # include "sh_builtins.h"
 # include "sh_environment.h"
 # include "sh_execution.h"
+# include "sh_expansion.h"
 # include "sh_hci.h"
 # include "sh_initialization.h"
 # include "sh_parser.h"

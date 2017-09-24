@@ -5,7 +5,6 @@ int		sh_tab_multi(t_line *line, t_coord **coord, t_tc tc, char *array[])
 	char	occ[PATH_MAX];
 	size_t	i;
 	size_t	j;
-	int		ret;
 
 	ft_strncpy(occ, array[1], PATH_MAX);
 	i = 2;
@@ -18,13 +17,13 @@ int		sh_tab_multi(t_line *line, t_coord **coord, t_tc tc, char *array[])
 		i += 1;
 	}
 	if (ft_strlen(occ) > ft_strlen(array[0]))
-		ret = sh_tab_comp(line, coord, tc, occ + ft_strlen(array[0]));
+		return (sh_tab_comp(line, coord, tc, occ + ft_strlen(array[0])));
 	else
 	{
 		array = ft_strtab_sort(array + 1);
+		sh_move_cur(line->cur, line->used, *coord, tc);
 		write(1, "\n", 1);
 		ft_strtab_disp(array);
-		ret = DISP_FULL;
+		return (DISP_FULL);
 	}
-	return (ret);
 }
