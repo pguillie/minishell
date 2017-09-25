@@ -1,6 +1,6 @@
 #include "shell.h"
 
-static int	sh_get_highest(t_token *lexer)
+static int		sh_get_highest(t_token *lexer)
 {
 	t_token	*b;
 	int		high;
@@ -16,7 +16,8 @@ static int	sh_get_highest(t_token *lexer)
 	return (high);
 }
 
-static int	sh_split(char **op, t_token *lexer, t_token **left, t_token **right)
+static int		sh_split(char **op, t_token *lexer, t_token **left,
+		t_token **right)
 {
 	int		high;
 
@@ -55,7 +56,7 @@ static t_token	*sh_pars_append(t_token *l, t_token *r)
 	return (r);
 }
 
-int			sh_parser(t_token *lexer, t_tree **root)
+int				sh_parser(t_token *lexer, t_tree **root)
 {
 	t_token	*left;
 	t_token	*right;

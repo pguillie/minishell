@@ -33,7 +33,7 @@ static char	*sh_tab_split(char *lexeme, char *dir)
 	size_t	i;
 
 	if (dir)
-		ft_bzero(dir, PATH_MAX);
+		ft_bzero(dir, PATH_SIZE);
 	i = 0;
 	while (lexeme[i])
 	{
@@ -65,7 +65,7 @@ static void	sh_tab_space(char *word, char ret[], size_t i)
 	}
 	if (last != '/')
 		ret[j++] = ' ';
-	while (j < PATH_MAX)
+	while (j < PATH_SIZE)
 		ret[j++] = '\0';
 }
 
@@ -87,7 +87,7 @@ int			sh_tab(t_line *line, t_token *lex, t_coord **coord, t_tc tc)
 {
 	char	**array;
 	char	*lexeme;
-	char	dir[PATH_MAX];
+	char	dir[PATH_SIZE];
 	int		category;
 	int		ret;
 
@@ -100,6 +100,7 @@ int			sh_tab(t_line *line, t_token *lex, t_coord **coord, t_tc tc)
 	array[0] = sh_tab_split(lexeme, dir);
 	if (!(array = sh_tab_find(array, dir, category)))
 		return (0);
+	ret = 0;
 	if (array[1] && !array[2])
 	{
 		sh_tab_space(array[1], dir, ft_strlen(array[0]));

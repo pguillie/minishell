@@ -19,11 +19,11 @@ static int	sh_prt_patch(char buff[], int *b)
 	return (i + 1);
 }
 
-int		sh_prt_vers(char buff[], int *b, char r)
+int			sh_prt_vers(char buff[], int *b, char r)
 {
 	char	*version;
 	int		i;
-	
+
 	version = VERSION;
 	i = 0;
 	while (version[i])

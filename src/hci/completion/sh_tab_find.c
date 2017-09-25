@@ -28,9 +28,9 @@ static void	sh_tab_append(char **array[], char *occ, char c)
 
 static void	sh_tab_norminette(char path[], char *dir, char *fil)
 {
-	ft_strncpy(path, dir, PATH_MAX);
-	ft_strlcat(path, "/", PATH_MAX);
-	ft_strlcat(path, fil, PATH_MAX);
+	ft_strncpy(path, dir, PATH_SIZE);
+	ft_strlcat(path, "/", PATH_SIZE);
+	ft_strlcat(path, fil, PATH_SIZE);
 }
 
 static void	sh_tab_open(char **array[], char *dir, int cat)
@@ -38,7 +38,7 @@ static void	sh_tab_open(char **array[], char *dir, int cat)
 	DIR				*dirp;
 	struct dirent	*de;
 	struct stat		buf;
-	char			path[PATH_MAX];
+	char			path[PATH_SIZE];
 	size_t			len;
 
 	if ((dirp = opendir(dir)))

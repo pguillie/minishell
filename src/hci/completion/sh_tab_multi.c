@@ -2,16 +2,16 @@
 
 int		sh_tab_multi(t_line *line, t_coord **coord, t_tc tc, char *array[])
 {
-	char	occ[PATH_MAX];
+	char	occ[PATH_SIZE];
 	size_t	i;
 	size_t	j;
 
-	ft_strncpy(occ, array[1], PATH_MAX);
+	ft_strncpy(occ, array[1], PATH_SIZE);
 	i = 2;
 	while (array[i] && occ[0])
 	{
 		j = 0;
-		while (j < PATH_MAX && occ[j] == array[i][j])
+		while (j < PATH_SIZE && occ[j] == array[i][j])
 			j++;
 		ft_strclr(occ + j);
 		i += 1;

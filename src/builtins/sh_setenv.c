@@ -12,13 +12,12 @@ static int	sh_setenv_array(char *var, char **env[])
 		len = 0;
 		while ((*env)[i][len] != '=')
 			len++;
-		if (ft_strnequ((*env)[i], var, len + 1))
+		if (ft_strnequ((*env)[i++], var, len + 1))
 		{
-			ft_strdel(&(*env)[i]);
-			(*env)[i] = var;
+			ft_strdel(&(*env)[i - 1]);
+			(*env)[i - 1] = var;
 			return (0);
 		}
-		i++;
 	}
 	if (!(new = (char**)ft_memalloc(sizeof(char*) * (i + 2))))
 		return (-1);
@@ -30,7 +29,7 @@ static int	sh_setenv_array(char *var, char **env[])
 	return (0);
 }
 
-int		sh_setenv_line(char *line, char **env[])
+int			sh_setenv_line(char *line, char **env[])
 {
 	char	*var;
 	size_t	i;
@@ -52,7 +51,7 @@ int		sh_setenv_line(char *line, char **env[])
 	return (sh_setenv_array(var, env));
 }
 
-int		sh_setenv_nam_val(char *name, char *value, char **env[])
+int			sh_setenv_nam_val(char *name, char *value, char **env[])
 {
 	char	*var;
 	size_t	i;
@@ -74,7 +73,7 @@ int		sh_setenv_nam_val(char *name, char *value, char **env[])
 	return (sh_setenv_array(var, env));
 }
 
-int		sh_setenv(char *av[], char **env[])
+int			sh_setenv(char *av[], char **env[])
 {
 	size_t	i;
 	int		ret;

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: pguillie <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/09/25 14:32:54 by pguillie          #+#    #+#             */
+/*   Updated: 2017/09/25 14:33:00 by pguillie         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "get_next_line.h"
 
 int		get_next_line(int fd, char **line)
@@ -6,7 +18,7 @@ int		get_next_line(int fd, char **line)
 	char		b[BUFF_SIZE + 1];
 	size_t		i;
 	int			c;
-	
+
 	if (!line || fd < 0 || fd >= 512 || !((c = BUFF_SIZE) > 0))
 		return (-1);
 	while (!ft_strchr(s[fd], '\n') && c == BUFF_SIZE)

@@ -6,7 +6,7 @@
 /*   By: pguillie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/18 13:55:39 by pguillie          #+#    #+#             */
-/*   Updated: 2017/09/21 19:10:16 by pguillie         ###   ########.fr       */
+/*   Updated: 2017/09/25 14:02:03 by pguillie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,7 @@ int			main(void)
 	ret = 0;
 	while (remaining_error)
 	{
-		g_sig = 0;
-		lexer = NULL;
-		root = NULL;
+		sh_init_loop(&lexer, &root);
 		if (sh_hci(&termcaps, &lexer, ret))
 			remaining_error -= 1;
 		else if (sh_parser(sh_expansion(lexer), &root) < 0)

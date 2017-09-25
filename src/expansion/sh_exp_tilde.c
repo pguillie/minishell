@@ -56,7 +56,7 @@ char		*sh_exp_tilde(char *lex)
 {
 	int		i;
 	char	quote;
-	
+
 	i = 0;
 	quote = 0;
 	while (lex[i])

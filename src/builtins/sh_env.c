@@ -26,13 +26,12 @@ static int	sh_env_opt(char *av[], char *opt)
 	return (i);
 }
 
-int		sh_env(char *av[], char *env[])
+int			sh_env(char *av[], char *env[])
 {
 	char	**env_mod;
 	char	opt[2];
 	int		i;
 	int		ret;
-
 
 	ft_memset(opt, 0, sizeof(char) * 2);
 	env_mod = NULL;

@@ -27,7 +27,7 @@
 # define ERROR_MAX 5
 # define PATH_SIZE 2048
 # define PRT_SIZE 256
-# define PROMPT_DIRTRIM 0
+# define PROMPT_DIRTRIM 3
 # define PS1 "\\s-\\v\\$ "
 # define PS2 "> "
 # define PS3 "#? "
@@ -40,16 +40,16 @@
 # define DISP_FULL 17
 
 # define SYN_ERR 4
-# define LEX_LOOP 2 
+# define LEX_LOOP 2
 # define LEX_OK 1
 
-# define UP 1    
-# define DOWN 2  
-# define RIGHT 4 
-# define LEFT 8  
-# define END 32  
+# define UP 1
+# define DOWN 2
+# define RIGHT 4
+# define LEFT 8
+# define END 32
 # define HOME 128
-# define CTL 64  
+# define CTL 64
 
 # define CASE(x) (x | 32)
 
